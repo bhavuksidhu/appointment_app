@@ -1,38 +1,194 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.mainnavbar {
   display: flex;
-  flex-direction: column;
+  align-items: center !important;
+  background-color: #fff !important;
+}
+.customContainer {
+  padding: 10px 2%;
+}
+
+.lead_img {
+  object-fit: cover;
+}
+
+.lead_desc_secondary {
+  font-size: 14px;
+}
+
+.doctor_desc_button svg {
+  fill: #000;
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.card-body .card-title,
+.doctor_desc_button {
+  padding: 15px 15px 4px !important;
+}
+
+.doctor_desc_wrapper {
+  padding: 15px;
+  background: #bfe4fd;
+}
+
+.leadCard_header {
+  gap: 5px;
+}
+
+.cards_main_container {
+  background: #dddddd73;
+  padding: 10px 8px 10px;
+}
+
+body * {
+  box-sizing: border-box !important;
+}
+
+.pd-0 {
+  padding: 0 !important;
+}
+.pr-5 {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
+}
+
+.cards_main_container h5 {
+  margin: 5px 0 10px !important;
+}
+
+h3.page_header {
+  margin: 20px 0 !important;
+  padding: 0 !important;
+}
+
+button.btn.btn-primary {
+  background: #0088f6;
+  border: 0;
+  border-radius: 18px;
+  padding: 5px 20px;
+  height: fit-content;
+}
+
+button.btn.btn-primary:hover {
+  background: #0088f6de;
+}
+
+.flex-flow-control {
+  display: flex !important;
+  justify-content: space-between;
+  flex-flow: row !important;
+  gap: 6px;
+}
+
+.flex-flow-content{
+  width: calc(50% - 3px);
+}
+
+.date-picker label{
+  top: -10px !important;
+}
+
+.line-10{
+  line-height: 10px!important;
+}
+
+input{
+  line-height: 10px !important;
+  padding: 22px 16px !important;
+}
+
+.upload_icon_wrapper .upload_icon {
+  background: blue;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
+}
+
+.upload_icon_wrapper {
+  padding: 4px;
+  border-radius: 100%;
+  border: 1px solid #ddd;
+}
+
+.upload_icon_wrapper .upload_icon svg {
+  fill: #fff;
+  color: #fff;
+  stroke: #fff;
+}
+input#avatar {
+  display: none;
+}
+
+.upload_icon_wrapper .upload_icon {
+  background: #0088f6;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
+}
+.upload_icon_wrapper_img img {
+  max-width: 70px;
+  max-height: 70px;
+  margin: 0 auto;
+  border-radius: 100%;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+}
+
+.upload_icon_wrapper_img button.change_avtar {
+  border: 0;
+  background: transparent;
+  color: #0088f6;
+  font-size: 12px;
+}
+
+.upload_icon_wrapper_img {
+  display: flex;
+  flex-flow: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
+  gap: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.upload_icon_wrapper {
+  padding: 4px;
+  border-radius: 100%;
+  border: 1px solid #ddd;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.upload_icon_wrapper .upload_icon svg {
+  fill: #fff;
+  color: #fff;
+  stroke: #fff;
+}
+
+.upload_avatar_main {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.upload_avatar_main p {
+  margin: 0;
+  color: #867d7d;
+}
+@media (max-width: 767px) {
+  .cards_main_container h5 {
+    margin: 5px 0 10px !important;
   }
-  to {
-    transform: rotate(360deg);
+
+  .customContainer.mt-3 {
+    padding: 0 30px;
   }
 }
