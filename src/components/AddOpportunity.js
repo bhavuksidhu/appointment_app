@@ -1,27 +1,28 @@
-import {
-  FormHelperText,
-  Input,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Autocomplete,
-} from "@mui/material";
-import { useState } from "react";
+import { MenuItem, Select, TextField, Autocomplete } from "@mui/material";
+import { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { toast } from "react-toastify";
 
-function AddOpportunity() {
-  const ariaLabel = { "aria-label": "description" };
-  const [show, setShow] = useState(false);
+function AddOpportunity(props) {
+  const {getOpportunities, editOpp, show, setShow} = props;
+
+
+  const [searchQuery, setSearchQuery] = useState({ patients: "", doctors: "" });
+  const [allMembers, setAllMembers] = useState({ patients: [], doctors: [] });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  
+  const initData = {
+    stage_name: 1,
+    procedure_name: "",
+  }
+  const [formData, setFormData] = useState(editOpp || initData);
 
-  const [formData, setFormData] = useState({ role: 1, gender: 1 });
+  console.log("tesfdsfsd", editOpp);
 
   const handleChange = (e, key = null) => {
     key ||= e.target.id;
@@ -31,9 +32,48 @@ function AddOpportunity() {
   const procedureOptions = [
     { label: "Lead", value: 1 },
     { label: "Qualified", value: 2 },
-    { label: "Booked", value: 1 },
+    { label: "Booked", value: 3 },
     { label: "Treated", value: 4 },
   ];
+
+  const handleSearch = (e, toSearch) => {
+    setSearchQuery({ ...searchQuery, [e?.target?.id]: e?.target?.value });
+
+    let url = process.env.REACT_APP_BACKEND;
+    url +=
+      toSearch === "patients"
+        ? `/searchPatients?query=${e?.target?.value || ''}`
+        : `/searchDoctors?query=${e?.target?.value || ''}`;
+    fetch(url, {
+      method: "GET",
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        setAllMembers({ ...allMembers, [toSearch]: [...data.result] });
+      });
+  };
+
+  useEffect(()=>{
+    handleSearch(null, "patients")
+    handleSearch(null, "doctors")
+  },[])
+
+  const handleSubmit = () => {
+    fetch(`${process.env.REACT_APP_BACKEND}/opportunities`, {
+      method: "POST",
+      body: JSON.stringify({ opportunity: formData }),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        
+        toast("Saved Successfully");
+        setShow(false);
+        getOpportunities();
+      });
+  };
 
   return (
     <>
@@ -45,51 +85,82 @@ function AddOpportunity() {
         <Modal.Header closeButton>
           <Modal.Title>Add opportunity</Modal.Title>
         </Modal.Header>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Modal.Body>
-            <FormControl className="w-100 mb-3">
-              <Select
-                labelId="Procedure"
-                id="procedure"
-                className="w-100 line-10 mb-3"
-                onChange={(e) => handleChange(e)}
-                value={formData?.gender}
-              >
-                {procedureOptions?.map((p) => {
-                  return <MenuItem value={p.value}>{p.label}</MenuItem>;
-                })}
-              </Select>
-            </FormControl>
-            <FormControl className="w-100 mb-3" size="small">
-              <Autocomplete
-                options={[]}
-                className="w-100 line-10 py-0"
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    className="w-100 line-10 px-0"
-                    label="Movie"
-                  />
-                )}
-              />
-            </FormControl>
-            <FormControl className="w-100 mb-3" size="small">
-              <Autocomplete
-                options={[]}
-                className="w-100 line-10"
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    className="w-100 line-10"
-                    label="Movie"
-                  />
-                )}
-              />
-            </FormControl>
-          </Modal.Body>
-        </LocalizationProvider>
+        <Modal.Body>
+          <FormControl className="w-100 mb-3">
+            <TextField
+              className="w-100"
+              label={
+                <div className="form_label">
+                  Procedure Name<span className="text-danger">*</span>
+                </div>
+              }
+              color="grey"
+              focused
+              id="procedure_name"
+              value={formData?.procedure_name}
+              onChange={(e) => handleChange(e)}
+            />
+          </FormControl>
+          <FormControl className="w-100 mb-3">
+            <Select
+              labelId="Procedure"
+              id="stage_name"
+              className="w-100 line-10 mb-3"
+              onChange={(e) => handleChange(e, "stage_name")}
+              value={formData?.stage_name}
+            >
+              {procedureOptions?.map((p) => {
+                return <MenuItem value={+p.value}>{p.label}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+          <FormControl className="w-100 mb-3" size="small">
+            <Autocomplete
+              options={allMembers?.patients}
+              className="w-100 line-10 py-0"
+              value={allMembers?.patients?.find(
+                (e) => e.id === formData?.patient_id
+              )}
+              onChange={(e, value) =>
+                setFormData({ ...formData, patient_id: value.id })
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  className="w-100 line-10 px-0"
+                  label="Patient"
+                  id="patients"
+                  value={searchQuery?.patients}
+                  onChange={(e) => handleSearch(e, "patients")}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl className="w-100 mb-3" size="small">
+            <Autocomplete
+              options={allMembers?.doctors}
+              className="w-100 line-10"
+              value={allMembers?.doctors?.find(
+                (e) => e.id === formData?.doctor_id
+              )}
+              onChange={(e, value) =>
+                setFormData({ ...formData, doctor_id: value.id })
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  className="w-100 line-10"
+                  label="Doctor"
+                  value={searchQuery?.doctors}
+                  id="doctors"
+                  onChange={(e) => handleSearch(e, "doctors")}
+                />
+              )}
+            />
+          </FormControl>
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSubmit}>
             Save
           </Button>
         </Modal.Footer>

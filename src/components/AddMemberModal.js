@@ -13,6 +13,7 @@ import Modal from "react-bootstrap/Modal";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { UserRoundPlus } from "lucide-react";
+import { toast } from "react-toastify";
 
 function AddMemberModal() {
   const ariaLabel = { "aria-label": "description" };
@@ -40,7 +41,8 @@ function AddMemberModal() {
           method: "POST",
           body: formdata
       }).then(r=>r.json()).then((data)=>{
-        console.log("dddddddddd",data);
+        toast('Member added');
+        setShow(false);
       })
   }
 
