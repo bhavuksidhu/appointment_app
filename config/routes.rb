@@ -12,5 +12,7 @@ Rails.application.routes.draw do
 
   get '/doctors',to: 'members#doctor_list'
   get '/patients',to: 'members#patient_list'
+  get '/searchPatients',to: 'members#search_patients'
+  get '/searchDoctors',to: 'members#search_doctors'
 
 end

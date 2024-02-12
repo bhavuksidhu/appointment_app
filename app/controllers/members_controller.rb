@@ -30,6 +30,18 @@ class MembersController < ApplicationController
         end
     end
 
+    def search_patients
+        result = params[:query].present? ? Member.search("patient", params[:query]) : Member.where(role: "patient").limit(10)
+        result = result&.map{|r| {label: r.name, id: r.id}}
+        render json: {result: result}
+    end
+
+    def search_doctors
+        result = params[:query].present? ? Member.search("doctor", params[:query]) : Member.where(role: "doctor").limit(10)
+        result = result&.map{|r| {label: r.name, id: r.id}}
+        render json: {result: result}
+    end
+
     private
       def member_params
         params.require(:member).permit(:first_name, :last_name, :dob, :gender, :role, :avatar)
