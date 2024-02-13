@@ -51,15 +51,8 @@ function PatientList() {
 
   const handleEditOpp = (oppid, op) => {
     let currentOpp = opportunities[op]?.find((o) => o.id === oppid);
-    let editdata = {
-      id: currentOpp.id,
-      stage_name: op,
-      procedure_name: currentOpp.procedure_name,
-      doctor_id: currentOpp.doctor_id,
-      patiend_id: currentOpp.patiend_id,
-    };
-    setEditOpp({ ...editdata });
-    console.log("fdsfds", editdata);
+  
+    setEditOpp(currentOpp.id);
     setShow(true);
   };
 

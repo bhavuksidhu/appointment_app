@@ -16,7 +16,7 @@ import { UserRoundPlus } from "lucide-react";
 import { toast } from "react-toastify";
 
 function AddMemberModal(props) {
-  const { show, setShow} =props;
+  const { show, setShow } = props;
   const ariaLabel = { "aria-label": "description" };
 
   const handleClose = () => setShow(false);
@@ -29,22 +29,26 @@ function AddMemberModal(props) {
     setFormData({ ...formData, [key]: e.target.value });
   };
 
-  const saveMember = ()=>{
-      const formdata = new FormData();
-      formdata.append('first_name', formData?.first_name )
-      formdata.append('last_name', formData?.last_name )
-      formdata.append('avatar', formData?.avatar )
-      formdata.append('gender', formData?.gender )
-      formdata.append('dob', formData?.dob )
-      formdata.append('role', formData?.role )
-      fetch(`${process.env.REACT_APP_BACKEND}/members`, {
-          method: "POST",
-          body: formdata
-      }).then(r=>r.json()).then((data)=>{
-        toast('Member added');
+  const saveMember = () => {
+    const formdata = new FormData();
+    formdata.append("first_name", formData?.first_name || '');
+    formdata.append("last_name", formData?.last_name || '');
+    if (formData?.avatar) {
+      formdata.append("avatar", formData?.avatar);
+    }
+    formdata.append("gender", formData?.gender);
+    formdata.append("dob", formData?.dob || '');
+    formdata.append("role", formData?.role);
+    fetch(`${process.env.REACT_APP_BACKEND}/members`, {
+      method: "POST",
+      body: formdata,
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        toast("Member added");
         setShow(false);
-      })
-  }
+      });
+  };
 
   return (
     <>
@@ -79,10 +83,10 @@ function AddMemberModal(props) {
                   </>
                 ) : (
                   <>
-                  <div className="upload_icon_wrapper_img">
+                    <div className="upload_icon_wrapper_img">
                       <img src={URL.createObjectURL(formData?.avatar)} />
                       <button className="change_avtar">change</button>
-                  </div>
+                    </div>
                   </>
                 )}
               </label>
