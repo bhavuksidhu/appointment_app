@@ -31,19 +31,25 @@ function AddOpportunity(props) {
           if (data?.opportunity) {
             setFormData(data?.opportunity);
             setAllMembers({ ...data.allMembers });
-            setSearchQuery({...{
-              patients: data.allMembers?.patients?.[0]?.label,
-              doctors: data.allMembers?.doctors?.[0]?.label,
-            }});
+            setSearchQuery({
+              ...{
+                patients: data.allMembers?.patients?.[0]?.label,
+                doctors: data.allMembers?.doctors?.[0]?.label,
+              },
+            });
           }
         });
     } else {
-      handleSearch(null, "patients");
-      handleSearch(null, "doctors");
+      initAllMembers();
     }
   }, [editOpp]);
 
-  console.log("allmemebers", searchQuery, formData);
+  const initAllMembers = async () => {
+    let patients = await handleSearch(null, "patients", true);
+    let doctors = await handleSearch(null, "doctors", true);
+    setAllMembers({ patients: patients, doctors: doctors });
+  };
+
   const handleChange = (e, key = null) => {
     key ||= e.target.id;
     setFormData({ ...formData, [key]: e.target.value });
@@ -56,7 +62,7 @@ function AddOpportunity(props) {
     { label: "Treated", value: 4 },
   ];
 
-  const handleSearch = (e, toSearch) => {
+  const handleSearch = async (e, toSearch, isReturn = false) => {
     setSearchQuery({ ...searchQuery, [e?.target?.id]: e?.target?.value });
 
     let url = process.env.REACT_APP_BACKEND;
@@ -64,21 +70,23 @@ function AddOpportunity(props) {
       toSearch === "patients"
         ? `/searchPatients?query=${e?.target?.value || ""}`
         : `/searchDoctors?query=${e?.target?.value || ""}`;
-    fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
     })
-      .then((r) => r.json())
-      .then((data) => {
-        setAllMembers({ ...allMembers, [toSearch]: [...data.result] });
-      });
+    const data = await response.json();
+    if (isReturn) {
+      return data.result || [];
+    } else {
+      setAllMembers({ ...allMembers, [toSearch]: [...data.result] });
+    }
   };
 
   const handleSubmit = () => {
-    let url = `${process.env.REACT_APP_BACKEND}/opportunities`
-    let method = 'POST'
-    if(editOpp){
-      url +=  `/${editOpp}`
-      method = 'PUT'
+    let url = `${process.env.REACT_APP_BACKEND}/opportunities`;
+    let method = "POST";
+    if (editOpp) {
+      url += `/${editOpp}`;
+      method = "PUT";
     }
     fetch(url, {
       method: method,
