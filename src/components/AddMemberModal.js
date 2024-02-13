@@ -127,7 +127,7 @@ function AddMemberModal(props) {
                 id="role"
                 className="w-100 line-10"
                 value={formData?.role}
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleChange(e, "role")}
               >
                 <MenuItem value={1}>Doctor</MenuItem>
                 <MenuItem value={2}>Patient</MenuItem>
@@ -138,7 +138,7 @@ function AddMemberModal(props) {
                 labelId="Gender"
                 id="gender"
                 className="w-50 line-10 mb-3"
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleChange(e, "gender")}
                 value={formData?.gender}
               >
                 <MenuItem value={1}>Male</MenuItem>
