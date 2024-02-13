@@ -51,7 +51,7 @@ function PatientList() {
 
   const handleEditOpp = (oppid, op) => {
     let currentOpp = opportunities[op]?.find((o) => o.id === oppid);
-  
+
     setEditOpp(currentOpp.id);
     setShow(true);
   };
@@ -68,7 +68,13 @@ function PatientList() {
             <Button variant="primary" onClick={() => setAddMemberShow(true)}>
               Add Member
             </Button>
-            <Button variant="primary" onClick={() => setShow(true)}>
+            <Button
+              variant="primary"
+              onClick={() => {
+                setEditOpp();
+                setShow(true);
+              }}
+            >
               Add opportunity
             </Button>
             {addMemberShow && (
@@ -119,7 +125,9 @@ function PatientList() {
                           </Card.Title>
                           <div className="doctor_desc_wrapper d-flex justify-content-between">
                             <div className="doctor_desc">
-                              <h6 className="">{opportunity?.procedure}</h6>
+                              <h6 className="">
+                                {opportunity?.procedure_name}
+                              </h6>
                               <h6 className="">
                                 {opportunity?.doctor?.first_name}{" "}
                                 {opportunity?.doctor?.last_name}
