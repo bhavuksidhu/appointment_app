@@ -15,9 +15,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { UserRoundPlus } from "lucide-react";
 import { toast } from "react-toastify";
 
-function AddMemberModal() {
+function AddMemberModal(props) {
+  const { show, setShow} =props;
   const ariaLabel = { "aria-label": "description" };
-  const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -48,10 +48,6 @@ function AddMemberModal() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add Member
-      </Button>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Member</Modal.Title>

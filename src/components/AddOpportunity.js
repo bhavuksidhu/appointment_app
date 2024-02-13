@@ -77,13 +77,10 @@ function AddOpportunity(props) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add opportunity
-      </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add opportunity</Modal.Title>
+          <Modal.Title>{editOpp ? "Edit" : "Add"} opportunity</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <FormControl className="w-100 mb-3">

@@ -49,15 +49,21 @@ function PatientList() {
       });
   };
 
-  const handleEditOpp = (oppid, op)=>{
-    let currentOpp = opportunities[op]?.find((o)=> o.id === oppid)
-    let editdata = {id: currentOpp.id, stage_name:  op, procedure_name: currentOpp.procedure_name, doctor_id: currentOpp.doctor_id, patiend_id: currentOpp.patiend_id}
-    setEditOpp({...editdata})
+  const handleEditOpp = (oppid, op) => {
+    let currentOpp = opportunities[op]?.find((o) => o.id === oppid);
+    let editdata = {
+      id: currentOpp.id,
+      stage_name: op,
+      procedure_name: currentOpp.procedure_name,
+      doctor_id: currentOpp.doctor_id,
+      patiend_id: currentOpp.patiend_id,
+    };
+    setEditOpp({ ...editdata });
     console.log("fdsfds", editdata);
-    setShow(true)
-  }
+    setShow(true);
+  };
 
-
+  const [addMemberShow, setAddMemberShow] = useState(false);
 
   return (
     <div className="customContainer mt-3">
@@ -66,8 +72,24 @@ function PatientList() {
           <p className="text-center">Patients</p>
           <hr className="" />
           <span className="d-flex justify-content-center gap-2">
-            <AddMemberModal {...{ getOpportunities }} />{" "}
-            <AddOpportunity {...{ getOpportunities, editOpp, show, setShow }} />
+            <Button variant="primary" onClick={() => setAddMemberShow(true)}>
+              Add Member
+            </Button>
+            <Button variant="primary" onClick={() => setShow(true)}>
+              Add opportunity
+            </Button>
+            {addMemberShow && (
+              <AddMemberModal
+                {...{ getOpportunities }}
+                setShow={setAddMemberShow}
+                show={addMemberShow}
+              />
+            )}
+            {show && (
+              <AddOpportunity
+                {...{ getOpportunities, editOpp, show, setShow }}
+              />
+            )}
           </span>
         </h3>
         {opTypes?.map((op, i) => {
@@ -139,9 +161,12 @@ function PatientList() {
                                   <SkipForward />
                                 </span>
                               )}
-                              <span className="curosr" onClick={() => {
-                                handleEditOpp(opportunity.id, op)
-                              }}>
+                              <span
+                                className="curosr"
+                                onClick={() => {
+                                  handleEditOpp(opportunity.id, op);
+                                }}
+                              >
                                 <Pencil />
                               </span>
                             </div>
