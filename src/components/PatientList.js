@@ -13,7 +13,7 @@ function PatientList() {
   const [editOpp, setEditOpp] = useState();
   const [show, setShow] = useState(false);
   const getOpportunities = () => {
-    fetch(`http://localhost:3000/opportunities`, {
+    fetch(`${process.env.REACT_APP_BACKEND}/opportunities`, {
       method: "GET",
     })
       .then((r) => r.json())
