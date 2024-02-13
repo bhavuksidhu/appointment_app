@@ -15,7 +15,7 @@ class OpportunitiesController < ApplicationController
     end
 
     def index
-      opportunities = Opportunity.includes(patient: { avatar_attachment: :blob }, doctor: { avatar_attachment: :blob })
+      opportunities = Opportunity.includes(patient: { avatar_attachment: :blob }, doctor: { avatar_attachment: :blob }).order(updated_at: :desc)
     
       # Initialize an empty hash for formatted data
       formatted_data = Hash.new { |hash, key| hash[key] = [] }
@@ -80,6 +80,16 @@ class OpportunitiesController < ApplicationController
       else
         render json: @opportunity.errors.full_messages, status: :unprocessable_entity
       end
+    end
+
+    def fetch_opportunity
+      opportunity = Opportunity.find(params[:id])
+      patient = opportunity.patient
+      doctor = opportunity.doctor
+      allMembers = {patients: [{label: patient.name, id: patient.id}], doctors: [{label: doctor.name, id: doctor.id}]}
+      opportunity = opportunity&.as_json
+      opportunity['stage_name'] = Opportunity.stage_names[opportunity['stage_name'] ].to_i
+      render json: {opportunity: opportunity, allMembers: allMembers}
     end
 
     private

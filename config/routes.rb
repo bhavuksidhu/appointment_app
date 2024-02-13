@@ -14,5 +14,6 @@ Rails.application.routes.draw do
   get '/patients',to: 'members#patient_list'
   get '/searchPatients',to: 'members#search_patients'
   get '/searchDoctors',to: 'members#search_doctors'
+  get '/fetchOpportunity/:id', to: "opportunities#fetch_opportunity"
 
 end
