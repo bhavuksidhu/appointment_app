@@ -1,6 +1,6 @@
 class OpportunitySerializer < ActiveModel::Serializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :procedure_name, :doctor_id, :patient_id, :stage_history
+  attributes :id, :procedure_name, :stage_name, :doctor_id, :patient_id, :stage_history
 
   attribute :doctor_details do |obj|
     if obj.doctor_id.present?

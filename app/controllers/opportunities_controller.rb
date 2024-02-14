@@ -24,7 +24,7 @@ class OpportunitiesController < ApplicationController
         # Serialize the opportunity along with patient and doctor, including avatar URLs
         op_data = op.attributes.merge(
           'patient' => op.patient.attributes.merge(
-            'avatar' => op.patient.avatar.attached ? Rails.application.routes.url_helpers.rails_blob_url(op.patient.avatar, only_path: true)  : ""
+            'avatar' => op.patient.avatar.attached? ? Rails.application.routes.url_helpers.rails_blob_url(op.patient.avatar, only_path: true)  : ""
           ),
           'doctor' => op.doctor.attributes.merge(
             'avatar' => op.doctor.avatar.attached? ? Rails.application.routes.url_helpers.rails_blob_url(op.doctor.avatar, only_path: true)  : ""
