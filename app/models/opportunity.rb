@@ -12,11 +12,11 @@ class Opportunity < ApplicationRecord
   def create_stage_history
     self.stage_history ||= []
     existing_stage = self.stage_history.find { |entry| entry['stage_name'] == self.stage_name }
-
+    timestamp = Time.now.strftime("%b %d, %Y %I:%M%p")
     if existing_stage
-      existing_stage['timestamp'] = Time.current
+      existing_stage['timestamp'] = timestamp
     else
-      self.stage_history << { stage_name: stage_name, timestamp: Time.current }
+      self.stage_history << { stage_name: stage_name, timestamp: timestamp }
     end
     self.save
   end
