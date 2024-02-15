@@ -136,10 +136,10 @@ function PatientList() {
                                 return (
                                   <div className="text-grayed d-flex text-secondary lead_desc_secondary justify-content-between w-100 gap-2">
                                     <span>{stage?.stage_name}</span>
-                                    <span>
-                                      {moment(stage?.stimestamp)?.format(
+                                    <span>{stage?.timestamp}
+                                      {/* {moment(stage?.stimestamp)?.format(
                                         "MMM D, YYYY h:mma"
-                                      )}
+                                      )} */}
                                     </span>
                                   </div>
                                 );
